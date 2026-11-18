@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#061321"><meta name="description" content="HABU — your personal bilingual AI assistant">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icon.svg" type="image/svg+xml">
+<title>HABU — Personal AI</title>
+<style>
+:root{--bg:#050d18;--panel:rgba(8,28,47,.88);--line:rgba(58,190,232,.25);--cyan:#22d3ee;--muted:#8aa9bd;--text:#e8f7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 35%,#0a2941 0,#061522 45%,#030811 100%);color:var(--text);font:15px/1.5 system-ui,Arial,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(rgba(48,161,206,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(48,161,206,.12) 1px,transparent 1px);background-size:40px 40px}
+header{height:64px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#030c16cc;position:sticky;top:0;z-index:2;backdrop-filter:blur(12px)}
+.brand{display:flex;gap:10px;align-items:center;font-weight:850;letter-spacing:.2em}.mark{width:34px;height:34px;border:1px solid var(--cyan);border-radius:10px;display:grid;place-items:center;color:var(--cyan);box-shadow:0 0 20px #22d3ee44}
+.pill{border:1px solid var(--line);border-radius:30px;padding:6px 11px;color:#bfefff;font-size:11px}
+main{max-width:1120px;margin:auto;padding:18px;display:grid;grid-template-columns:230px 1fr;gap:16px}
+.panel{background:linear-gradient(145deg,rgba(10,34,54,.94),rgba(4,18,32,.92));border:1px solid var(--line);border-radius:15px;box-shadow:0 0 25px #22d3ee12;overflow:hidden}
+.heading{font-size:11px;letter-spacing:.16em;color:#69cbe7;padding:13px 14px;border-bottom:1px solid #3ab0d51c;text-transform:uppercase}
+.stat{padding:14px}.muted{font-size:12px;color:var(--muted)}.big{font-size:24px;margin:4px 0}.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #3ab0d51c;font-size:12px}.row:last-child{border:0}
+.center{display:flex;flex-direction:column;gap:15px}.hero{min-height:310px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:18px}
+.orbwrap{width:210px;height:210px;display:grid;place-items:center;position:relative;margin:10px}.orb{width:145px;height:145px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#8af4ff,#168ac7 25%,#06365f 58%,#020b18 80%);box-shadow:0 0 28px #1abce8,0 0 75px #19b3e755;animation:pulse 3s infinite}.ring{position:absolute;inset:5px;border-radius:50%;border:2px solid transparent;border-top-color:#39e4ff;border-bottom-color:#1483c7;animation:spin 12s linear infinite}.ring.r2{inset:18px;border-style:dashed;border-color:#30beeb70;animation:spin 20s linear infinite reverse}.orbname{position:absolute;font-weight:800;letter-spacing:.2em;font-size:20px;text-shadow:0 0 15px #70eaff}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{transform:scale(1.04);filter:brightness(1.2)}}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+button,select{background:#0a2b43;color:var(--text);border:1px solid #2dbfe766;border-radius:9px;padding:10px 13px;cursor:pointer;font:inherit}button.primary{background:linear-gradient(90deg,#0878b6,#08a6c6);border:0;font-weight:700}button:disabled{opacity:.5;cursor:wait}
+.chat{min-height:390px;display:flex;flex-direction:column}.messages{padding:13px;display:flex;flex-direction:column;gap:10px;min-height:280px;max-height:50vh;overflow:auto}.bubble{max-width:90%;padding:10px 12px;border-radius:12px;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.bot{align-self:flex-start;background:#0a2c45;border:1px solid #36bcde35}.user{align-self:flex-end;background:#07557a;border:1px solid #36bcde55}
+form{display:flex;gap:8px;padding:11px;border-top:1px solid var(--line)}input{min-width:0;flex:1;background:#041522;border:1px solid var(--line);border-radius:9px;padding:12px;color:var(--text);font:inherit}input:focus{outline:1px solid var(--cyan)}
+aside{display:flex;flex-direction:column;gap:14px}.feed{padding:13px;font-size:12px;color:#c7e5f3}.feed p{margin:0 0 9px}.green{color:#64e9b8}.notice{font-size:11px;color:#8aa9bd;padding:10px 13px;line-height:1.5}
+@media(max-width:760px){header{padding:0 13px}main{grid-template-columns:1fr;padding:11px}.side{display:grid;grid-template-columns:1fr 1fr}.side .panel:first-child{grid-column:1/-1}.hero{min-height:280px}.orbwrap{width:185px;height:185px}.orb{width:130px;height:130px}.messages{max-height:48vh}.hide-mobile{display:none}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="mark">H</div><span>HABU <span style="color:#55d9f2">AI</span></span></div><div style="display:flex;gap:8px;align-items:center"><span class="pill"><span class="green">●</span> <span id="status">READY</span></span><select id="lang" aria-label="Language"><option value="auto">AUTO</option><option value="bn">বাংলা</option><option value="en">EN</option></select><button id="install" hidden>Install app</button></div></header>
+<main>
+<aside class="side">
+<section class="panel"><div class="heading" data-bn="সিস্টেম সময়" data-en="SYSTEM TIME">SYSTEM TIME</div><div class="stat"><div class="muted">Dhaka · Bangladesh</div><div class="big" id="clock">--:--:--</div><div class="muted" id="date"></div></div></section>
+<section class="panel"><div class="heading" data-bn="অ্যাসিস্ট্যান্ট" data-en="ASSISTANT">ASSISTANT</div><div class="stat"><div class="row"><span>AI Engine</span><b id="engine">Checking…</b></div><div class="row"><span>Languages</span><b>BN / EN</b></div><div class="row"><span>Memory</span><b>ON DEVICE</b></div></div></section>
+<section class="panel"><div class="heading" data-bn="দ্রুত নির্দেশনা" data-en="QUICK PROMPTS">QUICK PROMPTS</div><div class="stat" style="display:grid;gap:8px"><button onclick="quick('আমার আজকের পড়াশোনার রুটিন তৈরি করো')">Study routine</button><button onclick="quick('Help me practise English. Ask one question at a time.')">English coach</button><button onclick="quick('আমার কাজগুলো অগ্রাধিকার অনুযায়ী সাজিয়ে দাও')">Plan my day</button></div></section>
+</aside>
+<section class="center">
+<section class="panel hero"><div class="muted" style="letter-spacing:.18em">PERSONAL AI CORE · ONLINE</div><div class="orbwrap"><div class="ring"></div><div class="ring r2"></div><div class="orb"></div><div class="orbname">HABU</div></div><b style="font-size:17px" data-bn="হ্যালো! আমি HABU।" data-en="Hello! I’m HABU.">Hello! I’m HABU.</b><div class="muted" data-bn="তোমার ব্যক্তিগত বাংলা ও ইংরেজি AI সহকারী" data-en="Your personal Bengali & English AI assistant">Your personal Bengali & English AI assistant</div><div class="actions"><button class="primary" id="voice">🎙 Talk to HABU</button><button onclick="sayGreeting()">▶ Speak</button><button onclick="clearChat()">↺ Clear</button></div><div class="muted" id="voiceInfo" style="margin-top:8px">Voice support depends on your browser.</div></section>
+<section class="panel chat"><div class="heading" data-bn="কথোপকথন" data-en="CONVERSATION">CONVERSATION</div><div class="messages" id="messages"><div class="bubble bot">Hello! I’m HABU. Write in Bengali or English. How can I help?</div></div><form id="form"><input id="prompt" placeholder="Message HABU…" autocomplete="off" required><button class="primary" id="send">➤</button></form><div class="notice">Free-tier AI has usage limits. Avoid entering passwords, financial details, or other sensitive information.</div></section>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s);let deferredInstall=null;
+const KEY='habu-free-history';let history=[];try{history=JSON.parse(localStorage.getItem(KEY)||'[]').slice(-24)}catch{}
+function bubble(t,role){let d=document.createElement('div');d.className='bubble '+(role==='user'?'user':'bot');d.textContent=t;$('#messages').appendChild(d);$('#messages').scrollTop=$('#messages').scrollHeight}
+function render(){if(history.length){$('#messages').innerHTML='';history.forEach(x=>bubble(x.content,x.role))}}render();
+function save(){localStorage.setItem(KEY,JSON.stringify(history.slice(-24)))}
+function quick(t){$('#prompt').value=t;$('#form').requestSubmit()}
+function clearChat(){history=[];save();$('#messages').innerHTML='';bubble('Chat cleared. কীভাবে সাহায্য করতে পারি?','assistant')}
+$('#form').addEventListener('submit',async e=>{e.preventDefault();let text=$('#prompt').value.trim();if(!text)return;$('#prompt').value='';history.push({role:'user',content:text});bubble(text,'user');save();$('#send').disabled=true;$('#status').textContent='THINKING…';let wait=document.createElement('div');wait.className='bubble bot';wait.textContent='HABU is thinking…';$('#messages').appendChild(wait);try{let r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:history.slice(-16)})});let data=await r.json();if(!r.ok)throw new Error(data.error||'Request failed');wait.remove();history.push({role:'assistant',content:data.reply});bubble(data.reply,'assistant');save()}catch(err){wait.remove();bubble('HABU: '+err.message,'assistant')}finally{$('#send').disabled=false;$('#status').textContent='READY'}});
+function updateClock(){let d=new Date();$('#clock').textContent=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Dhaka',hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(d);$('#date').textContent=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Dhaka',weekday:'long',day:'numeric',month:'short',year:'numeric'}).format(d)}setInterval(updateClock,1000);updateClock();
+fetch('/api/health').then(r=>r.json()).then(x=>$('#engine').textContent=x.aiConfigured?'CONNECTED':'SET API KEY').catch(()=>$('#engine').textContent='OFFLINE');
+function say(t){if(!('speechSynthesis'in window))return;let u=new SpeechSynthesisUtterance(t);u.lang='bn-BD';speechSynthesis.cancel();speechSynthesis.speak(u)}
+function sayGreeting(){say('হ্যালো, আমি হাবু। কীভাবে তোমাকে সাহায্য করতে পারি?')}
+$('#voice').onclick=()=>{let R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){$('#voiceInfo').textContent='Speech recognition not supported in this browser. Use Chrome.';return}let r=new R();r.lang=$('#lang').value==='en'?'en-US':'bn-BD';r.onstart=()=>$('#voiceInfo').textContent='Listening…';r.onresult=e=>{$('#prompt').value=e.results[0][0].transcript;$('#form').requestSubmit()};r.onerror=()=>$('#voiceInfo').textContent='Microphone permission or speech recognition error.';r.onend=()=>$('#voiceInfo').textContent='Voice support depends on your browser.';r.start()};
+$('#lang').onchange=e=>{document.querySelectorAll('[data-bn]').forEach(x=>x.textContent=e.target.value==='bn'?x.dataset.bn:x.dataset.en)};
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;$('#install').hidden=false});$('#install').onclick=async()=>{if(!deferredInstall)return;deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;$('#install').hidden=true};
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+</script>
+</body></html>
